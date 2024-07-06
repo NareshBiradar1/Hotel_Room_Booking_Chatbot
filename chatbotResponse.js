@@ -5,12 +5,13 @@ const apiKey = process.env.OPENAI_API_KEY;
 
 async function sendMessage(prompt){
     const url = 'https://api.openai.com/v1/chat/completions';
+    const messages =  [
+        { role: 'system', content: 'You are a helpful assistant.' },
+        { role: 'user', content: prompt }
+    ]
     const data = {
         model: 'gpt-4', // or 'gpt-4-turbo'
-        messages: [
-            { role: 'system', content: 'You are a helpful assistant.' },
-            { role: 'user', content: prompt }
-        ],
+        messages,
         functions :function_descriptions , 
         function_call : "auto"
     };
@@ -28,13 +29,33 @@ async function sendMessage(prompt){
             "createBooking" : createBooking
         };
 
-        const output = response.data.choices[0].message.function_call;
+        const output = response.data.choices[0].message;
         
-        const function_name = output.name; 
-        let argumentsObject = JSON.parse(output.arguments);
+        const function_name = output.function_call.name; 
+        let argumentsObject = JSON.parse(output.function_call.arguments);
        
-        const function_response = await functionMap[function_name](argumentsObject);;
-        return function_response;
+        const function_response = await functionMap[function_name](argumentsObject);
+
+        messages.push(output);
+        messages.push({
+            "role": 'function',
+            "name" : function_name,
+            "content" : JSON.stringify(function_response)
+        });
+
+        const data2 = {
+            model: 'gpt-4', // or 'gpt-4-turbo'
+            messages,
+        };
+
+        const second_response = await axios.post(url, data2, {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        return second_response.data.choices[0].message.content;
         
     } catch (error) {
         console.error('Error:', error.response ? error.response.data : error.message);
@@ -153,4 +174,4 @@ async function getPrice({roomName}) {
     }
 }
 
-module.exports = { processMessage };
+module.exports = { processMessage, sendMessage };
