@@ -10,7 +10,7 @@ async function sendMessage(prompt){
         { role: 'user', content: prompt }
     ]
     const data = {
-        model: 'gpt-4', // or 'gpt-4-turbo'
+        model: 'gpt-3.5-turbo', // or 'gpt-4-turbo'
         messages,
         functions :function_descriptions , 
         function_call : "auto"
