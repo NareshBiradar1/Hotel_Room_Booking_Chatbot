@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const chatRouter = require('./chatRouter'); // Import the router
 
 const app = express();
-const port = 3000;
+const port = 3002;
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
