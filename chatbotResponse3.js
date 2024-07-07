@@ -1,6 +1,9 @@
 const axios = require('axios');
 require('dotenv').config();
 
+// const { Conversation } = require('./Database/index'); // Adjust the path as necessary
+
+
 const apiKey = process.env.OPENAI_API_KEY;
 
 async function sendMessage({ prompt, messages }) {
@@ -8,10 +11,13 @@ async function sendMessage({ prompt, messages }) {
 
     messages.push({ role: 'user', content: prompt });
 
+    console.log("PROMPT CAME :--  " + JSON.stringify(messages,null,2));
+
     const data = {
-        model: 'gpt-3.5-turbo',
+        model: 'gpt-4',
         messages,
         tools,
+        // tool_choice:"required"
     };
 
     try {
@@ -23,6 +29,9 @@ async function sendMessage({ prompt, messages }) {
         });
 
         const responseMessage = response.data.choices[0].message;
+
+        console.log("Response (send  message ) 1st Message:-- " + JSON.stringify(responseMessage,null,2));
+
         const toolCalls = responseMessage.tool_calls;
 
         if (toolCalls) {
@@ -33,6 +42,8 @@ async function sendMessage({ prompt, messages }) {
             };
 
             messages.push(responseMessage);
+
+            console.log("Tool Calls:-- " + JSON.stringify(toolCalls,null,2))
 
             for (const toolCall of toolCalls) {
                 const functionName = toolCall.function.name;
@@ -59,7 +70,7 @@ async function sendMessage({ prompt, messages }) {
             }
 
             const tempData = {
-                model: 'gpt-3.5-turbo',
+                model: 'gpt-4',
                 messages
             };
             const secondResponse = await axios.post(url, tempData, {
@@ -147,6 +158,8 @@ const processMessage = async (message) => {
             for (const toolCall of response[0].tool_calls) {
                 const { name, content } = toolCall;
                 const functionResponse = JSON.parse(content);
+
+                console.log("Function ( process Message ) Response:-- " + functionResponse);
 
                 if (functionResponse.missingParams) {
                     for (const prompt of functionResponse.prompts) {

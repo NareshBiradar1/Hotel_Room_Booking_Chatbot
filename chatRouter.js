@@ -1,12 +1,11 @@
 
 const express = require('express');
 
-
 const chatRouter = express.Router();
 const { processMessage } = require('./chatbotResponse3');
 
 const messages = [
-    { role: 'system', content: `You are a chatbot for Bot9Palace, a hotel booking service. Your primary functions are to fetch room details and book rooms for guests. You can access room details using the getRoomOptions function and book rooms using the bookRoom function. Here's how you should handle user interactions:
+    { role: 'system', content: `You are a chatbot for HotelHelperBot, a hotel booking service. Your primary functions are to fetch room details and book rooms for guests. You can access room details using the getRoomOptions function and book rooms using the bookRoom function. Here's how you should handle user interactions:
 
     Fetch Room Details: When a user asks for all available rooms, call the getRoomOptions function to fetch and display the details of available rooms.
     
@@ -28,7 +27,7 @@ const messages = [
     Email address
     Number of nights
     Room ID (from the getRoomOptions function corresponding to the type of room)
-    Booking Confirmation: If the booking is successful, show the user the booking ID and thank them for booking with Bot9Palace.
+    Booking Confirmation: If the booking is successful, show the user the booking ID and thank them for booking with HotelHelperBot.
     
     Important Notes:
     
