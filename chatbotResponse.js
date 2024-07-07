@@ -3,17 +3,17 @@ require('dotenv').config();
 
 const apiKey = process.env.OPENAI_API_KEY;
 
-async function sendMessage(prompt){
+async function sendMessage(prompt) {
     const url = 'https://api.openai.com/v1/chat/completions';
-    const messages =  [
+    const messages = [
         { role: 'system', content: 'You are a helpful assistant.' },
         { role: 'user', content: prompt }
     ]
     const data = {
-        model: 'gpt-3.5-turbo', // or 'gpt-4-turbo'
+        model: 'gpt-3.5-turbo', // or 'gpt-3.5-turbo-turbo'
         messages,
-        functions :function_descriptions , 
-        function_call : "auto"
+        functions: function_descriptions,
+        function_call: "auto"
     };
 
     try {
@@ -24,27 +24,27 @@ async function sendMessage(prompt){
             }
         });
         const functionMap = {
-            "getPrice": getPrice, 
-            "getAllRooms" : getAllRooms,
-            "createBooking" : createBooking
+            "getPrice": getPrice,
+            "getAllRooms": getAllRooms,
+            "createBooking": createBooking
         };
 
         const output = response.data.choices[0].message;
-        
-        const function_name = output.function_call.name; 
+
+        const function_name = output.function_call.name;
         let argumentsObject = JSON.parse(output.function_call.arguments);
-       
+
         const function_response = await functionMap[function_name](argumentsObject);
 
         messages.push(output);
         messages.push({
             "role": 'function',
-            "name" : function_name,
-            "content" : JSON.stringify(function_response)
+            "name": function_name,
+            "content": JSON.stringify(function_response)
         });
 
         const data2 = {
-            model: 'gpt-4', // or 'gpt-4-turbo'
+            model: 'gpt-3.5-turbo', // or 'gpt-3.5-turbo-turbo'
             messages,
         };
 
@@ -56,7 +56,7 @@ async function sendMessage(prompt){
         });
 
         return second_response.data.choices[0].message.content;
-        
+
     } catch (error) {
         console.error('Error:', error.response ? error.response.data : error.message);
     }
@@ -83,29 +83,29 @@ const function_descriptions = [
         }
     },
     {
-        "name" : "createBooking",
-        "description" : "creates a booking of the room after user has given all the parameters",
+        "name": "createBooking",
+        "description": "creates a booking of the room after user has given all the parameters",
         "parameters": {
             "type": "object",
             "properties": {
-                "roomId":{
-                    "type" : "integer",
-                    "description" : "Id of the room which user wants to book"
+                "roomId": {
+                    "type": "integer",
+                    "description": "Id of the room which user wants to book"
                 },
-                "fullName":{
-                    "type" : "string",
-                    "description" : "Name of the user"
+                "fullName": {
+                    "type": "string",
+                    "description": "Name of the user"
                 },
-                "email":{
-                    "type" : "string",
-                    "description" : "Email of the user"
+                "email": {
+                    "type": "string",
+                    "description": "Email of the user"
                 },
-                "nights":{
-                    "type" : "integer",
-                    "description" : "Number of nights the user wants to book the room for"
+                "nights": {
+                    "type": "integer",
+                    "description": "Number of nights the user wants to book the room for"
                 }
             },
-            "required": ["roomId" , "fullName" , "email" , "nights"]
+            "required": ["roomId", "fullName", "email", "nights"]
         }
     }
 ]
@@ -131,7 +131,7 @@ async function getAllRooms() {
     }
 }
 
-async function createBooking({roomId, fullName, email, nights}) {
+async function createBooking({ roomId, fullName, email, nights }) {
     const bookingData = {
         roomId: roomId,
         fullName: fullName,
@@ -152,7 +152,7 @@ async function createBooking({roomId, fullName, email, nights}) {
     }
 }
 
-async function getPrice({roomName}) {
+async function getPrice({ roomName }) {
     const url = 'https://bot9assignement.deno.dev/rooms';
 
     try {

@@ -3,14 +3,14 @@ require('dotenv').config();
 
 const apiKey = process.env.OPENAI_API_KEY;
 
-async function sendMessage(prompt) {
+async function sendMessage({ prompt, messages }) {
     const url = 'https://api.openai.com/v1/chat/completions';
-    const messages = [
-        { role: 'system', content: 'You are a helpful assistant.' },
-        { role: 'user', content: prompt }
-    ];
+
+    messages.push({ role: 'user', content: prompt });
+
+
     const data = {
-        model: 'gpt-3.5-turbo', // or 'gpt-4-turbo'
+        model: 'gpt-3.5-turbo', // or 'gpt-3.5-turbo-turbo'
         messages,
         tools: tools,
         // tool_choice: auto,
