@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const chatRouter = require('./chatRouter');
+const chatRouter = require('./Routers/chatRouter');
 
 const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('./DataBase/database');
@@ -15,8 +15,22 @@ app.use(bodyParser.json());
 // Use the chatRouter for /chat routes
 app.use('/chat', chatRouter);
 
-await sequelize.sync();
+// await sequelize.sync();
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Server is running on http://localhost:${port}`);
+// });
+
+const startServer = async () => {
+    try {
+        await sequelize.sync();
+        app.listen(port, () => {
+            console.log(`Server is running on http://localhost:${port}`);
+        });
+    } catch (error) {
+        console.error('Unable to start the server:', error);
+    }
+};
+
+startServer();
+

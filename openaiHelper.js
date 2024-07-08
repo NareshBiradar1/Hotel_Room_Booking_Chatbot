@@ -1,16 +1,12 @@
-const { sendMessage } = require('./chatbotResponse3');
+// const { sendMessage } = require('./chatbotResponse3');
+const { sendMessage } = require('./ChatBotResponses/chatbotResponse3');
 
-const processMessage = async (prompt,messages ) => {
+const processMessage = async ({prompt,session_id} ) => {
   try {
-      const response = await sendMessage({prompt, messages});
-      // console.log("Received: " + response);
+      // console.log("Received: id middle " + session_id);
+      console.log("Received: prompt middle " + prompt);
+      const response = await sendMessage({prompt, session_id});
 
-      // Format the response if it's an array of objects
-    //   if (Array.isArray(response)) {
-    //       return response.map(room => `Room Name: ${room.name}, Price: ${room.price}`).join('\n');
-    //   }
-
-    // console.log(response[0] );
     return response;
   } catch (error) {
       console.error('Error processing message:', error);
