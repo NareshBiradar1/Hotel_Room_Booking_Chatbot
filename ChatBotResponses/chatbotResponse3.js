@@ -1,8 +1,8 @@
 const axios = require('axios');
 require('dotenv').config();
 
-const retrieveMessages = require('../DataBaseServices/retrieveMessages');
-const storeMessage = require('../DataBaseServices/storeMessage');
+const retrieveMessages = require('../Services/retrieveMessages');
+const storeMessage = require('../Services/storeMessage');
 const sequelize = require('../DataBase/database');
 
 const apiKey = process.env.OPENAI_API_KEY;
