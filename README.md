@@ -1,4 +1,4 @@
-## [Link To Telegram chatbot](t.me/dukaan_chatbot_bot) :- t.me/dukaan_chatbot_bot
+## [Link To Telegram chatbot](https://t.me/dukaan_chatbot_bot) :- https://t.me/dukaan_chatbot_bot
 
 # bot9 Palace Chatbot
 
@@ -46,7 +46,7 @@ You can test this project in two ways:
 
 ### Using the Telegram Chatbot:
 
-Visit the [Telegram chatbot](t.me/dukaan_chatbot_bot) link provided and start using the bot directly.
+Visit the [Telegram chatbot](https://t.me/dukaan_chatbot_bot) link provided and start using the bot directly.
 
 ### Running Locally with Postman:
 
